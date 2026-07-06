@@ -5,16 +5,20 @@ extends CharacterBody2D
 @export var speed: float
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var character_sprite: Sprite2D = $CharacterSprite
+@onready var damage_emitter: Area2D = $DamageEmitter
 
 enum State {IDLE, WALK, ATTACK}
 
 var state = State.IDLE
 
+func _ready() -> void:
+	damage_emitter.area_entered.connect(_on_emit_damage.bind())	
+
 func _process(_delta: float) -> void:
 	handle_input()
 	handle_movement()
 	handle_animations()
-	handle_sprite()
+	flip_sprite()
 	move_and_slide()
 
 func handle_movement() -> void:
@@ -40,11 +44,13 @@ func handle_animations() -> void:
 	elif state == State.ATTACK:
 		animation_player.play("punch")
 		
-func handle_sprite() -> void:
+func flip_sprite() -> void:
 	if velocity.x < 0:
 		character_sprite.flip_h = true
+		damage_emitter.scale.x = -1
 	elif velocity.x > 0:
 		character_sprite.flip_h = false
+		damage_emitter.scale.x = 1
 		
 func can_attack() -> bool:
 	return state == State.IDLE or state == State.WALK
@@ -54,3 +60,8 @@ func can_walk() -> bool:
 
 func on_action_complete() -> void:
 	state = State.IDLE
+
+# 定义类是为了获得更好的类型推导! class_name...
+func _on_emit_damage(damage_receiver: DamageReceiver) -> void:
+	var direction = Vector2.LEFT if damage_receiver.global_position.x < global_position.x else Vector2.RIGHT
+	damage_receiver.damage_received.emit(damage, direction)
