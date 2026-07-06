@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://dvp74slv4qnfy"]
+
+[ext_resource type="PackedScene" uid="uid://cbush5wlgw1in" path="res://scenes/charachters/character.tscn" id="1_evxlh"]
+[ext_resource type="Texture2D" uid="uid://dt8aswj4adtee" path="res://assets/art/characters/player.png" id="2_8m3lm"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8m3lm"]
+radius = 2.0
+height = 14.0
+
+[sub_resource type="Animation" id="Animation_a5qat"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_8m3lm"]
+resource_name = "idle"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_absfm"]
+resource_name = "walk"
+length = 0.8
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [10, 11, 12, 13, 14, 15, 16, 17]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_a5qat"]
+_data = {
+&"RESET": SubResource("Animation_a5qat"),
+&"idle": SubResource("Animation_8m3lm"),
+&"walk": SubResource("Animation_absfm")
+}
+
+[node name="Player" unique_id=1230160566 instance=ExtResource("1_evxlh")]
+collision_layer = 2
+collision_mask = 9
+heath = 30
+damage = 4
+speed = 35.0
+
+[node name="CharacterSprite" parent="." index="1" unique_id=1584451760]
+position = Vector2(-24, -48)
+texture = ExtResource("2_8m3lm")
+centered = false
+hframes = 10
+vframes = 10
+
+[node name="CollisionShape2D" parent="." index="2" unique_id=1474266423]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_8m3lm")
+
+[node name="AnimationPlayer" parent="." index="3" unique_id=199770246]
+libraries/ = SubResource("AnimationLibrary_a5qat")
+autoplay = &"idle"
