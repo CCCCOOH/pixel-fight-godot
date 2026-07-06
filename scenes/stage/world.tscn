@@ -3,19 +3,17 @@
 [ext_resource type="Script" uid="uid://dl5l4lkdwfyol" path="res://scenes/stage/world.gd" id="1_4lh8l"]
 [ext_resource type="PackedScene" uid="uid://bbjcnqpe8r65x" path="res://scenes/stage/stage.tscn" id="1_nnsk1"]
 [ext_resource type="PackedScene" uid="uid://dvp74slv4qnfy" path="res://scenes/charachters/player.tscn" id="2_rwgxs"]
+[ext_resource type="PackedScene" uid="uid://3ef5akcilccc" path="res://scenes/props/barrel.tscn" id="4_xctbc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xctbc"]
 size = Vector2(3, 60)
 
-[node name="World" type="Node2D" unique_id=1238638179]
+[node name="World" type="Node2D" unique_id=1238638179 node_paths=PackedStringArray("player", "camera")]
 script = ExtResource("1_4lh8l")
+player = NodePath("OrderContainer/Player")
+camera = NodePath("Camera")
 
 [node name="Stage" parent="." unique_id=1995163804 instance=ExtResource("1_nnsk1")]
-
-[node name="Player" parent="." unique_id=1230160566 instance=ExtResource("2_rwgxs")]
-position = Vector2(41, 42)
-collision_layer = 1
-collision_mask = 1
 
 [node name="Camera" type="Camera2D" parent="." unique_id=951951244]
 position = Vector2(50, 32)
@@ -34,3 +32,13 @@ position = Vector2(99, 39)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Camera/InvisibleWalls/RightWall" unique_id=1550669582]
 shape = SubResource("RectangleShape2D_xctbc")
+
+[node name="OrderContainer" type="Node2D" parent="." unique_id=14744259]
+y_sort_enabled = true
+
+[node name="Barrel" parent="OrderContainer" unique_id=966356602 instance=ExtResource("4_xctbc")]
+position = Vector2(77, 41)
+
+[node name="Player" parent="OrderContainer" unique_id=1230160566 instance=ExtResource("2_rwgxs")]
+position = Vector2(41, 42)
+collision_layer = 1
